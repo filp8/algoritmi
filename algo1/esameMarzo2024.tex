@@ -1,0 +1,170 @@
+\documentclass[12pt]{article}
+
+\usepackage{fontspec}
+\setmainfont{Biancoenero}
+\setsansfont{Biancoenero}
+\setmonofont{Biancoenero}
+
+\usepackage[italian]{babel}
+\usepackage{graphicx}
+
+\linespread{1.25}
+
+\title{{Introduzione agli Algoritmi}\\ {\bf Esame Scritto a canali unificati} \\ {\bf con spunti per la soluzione}
+\vspace*{-.5cm}}
+\author{ 
+docenti: {T. Calamoneri, A. Monti}\\ 
+Sapienza Universit\`a di Roma\\ 
+\vspace*{-1cm}
+\date{Appello straordinario 2024}
+}
+
+
+
+\begin{document}
+
+%\sffamily
+\maketitle
+
+
+\vspace*{-.5cm}
+%%%%%%%%%%%%%%%%%%
+\noindent
+\textbf{Esercizio 1 (10 punti): } 
+Si consideri la seguente funzione: 
+\medskip
+
+{\tt
+\noindent def Exam($n$):\\
+\hspace*{0.5cm} if $n <= 1$: return $5$\\
+\hspace*{0.5cm} $x\,=\,s\,=\,1$ \\
+\hspace*{0.5cm} while $3*x\, \leq n$: \\
+\hspace*{1.5cm} $x\,+=\,1$\\
+\hspace*{1.5cm} $s\,+=\,2$\\
+\hspace*{0.5cm} $s\,+=\,2*$Exam($x$) $+2*$Exam($n-2*x$)\\ 
+\hspace*{0.5cm} while  $x\,>\,0$: \\
+\hspace*{1.5cm} $n\,-=\,2$ \\
+\hspace*{1.5cm} $x\,-=\,1$\\
+\hspace*{0.5cm} $s\,+=$ Exam($ n$)\\
+\hspace*{0.5cm} return $s$
+}
+\\
+
+
+\begin{itemize}
+\item[a)] Si imposti la relazione di ricorrenza che ne definisce il tempo di esecuzione giustificando dettagliatamente l'equazione ottenuta.
+\item[b)] Si risolva la ricorrenza  usando due metodi a scelta, dettagliando i passaggi del calcolo e giustificando ogni affermazione. 
+\end{itemize}
+
+\noindent
+\textbf{
+a) Per semplicitÃ , assumiamo che $n$ sia un multiplo di 3, ma gli stessi ragionamenti funzionano anche per gli altri valori di $n$ (con qualche accortezza in piÃ¹ per la gestione delle parti intere).\\ 
+Il primo ed il secondo while richiedono tempo $\Theta(n)$ (precisamente, per ognuno di essi vengono eseguite  $n/3$ iterazioni). Si hanno poi  tre chiamate ricorsive al programma $Exam$. 
+Al termine del primo while $x$ vale $n/3$, quindi la prima chiamata \`e sul sottoproblema di dimensione $x=n/3$. 
+La seconda chiamata \`e su un sottoproblema di dimensioni $n-2x=n/3$. 
+In ognuna delle $n/3$ iterazioni del secondo while, $n$ si decrementa di $2$  quindi, al termine della sua esecuzione, $n$ vale $n-2n/3=n/3$ e  anche la terza chiamata di $Exam$ \`e perciÃ² richiamata su un sottoproblema di dimensioni $n/3$. 
+Le restanti istruzioni hanno tutte costo $\Theta(1)$ . Quindi l'equazione di ricorrenza che caratterizza la funzione \`e:\\
+}
+$T(n)=3T(n/3)+\Theta(n)$ se $n > 1$ \\
+$T(n)=\Theta(1)$ altrimenti.
+
+\noindent
+\textbf{
+b) Possiamo risolvere la ricorrenza trovata ad esempio con il metodo principale, la cui soluzione \`e $\Theta(n \log n)$ e verificarla con un altro metodo.
+}
+
+
+\medskip \medskip
+%%%%%%%%%%%%%%%%%%
+\noindent
+\textbf{Esercizio 2 (10 punti):} 
+Sia dato un array $A$ di $n\geq 1 $ interi distinti i cui elementi sono ordinati in modo crescente nella parte sinistra ed in modo decrescente nella parte destra.
+Progettare un algoritmo {\em iterativo} che restituisca  l'intero massimo contenuto nell'array in tempo $O(\log n)$.
+
+Ad esempio, per l'array $A= [8, 10, 20, 80, 100, 200, 400, 500, 180, 30, 2, 1]$ l'algoritmo deve restituire il valore $500$.
+
+\noindent 
+Dell'algoritmo proposto:
+\begin{itemize}
+\item[a)] si scriva lo pseudocodice opportunamente commentato;
+\item[b)] si giustifichi il costo computazionale.
+\end{itemize}
+
+\begin{itemize}
+\item[a)]  
+\textbf{Si puÃ² utilizzare una variante della ricerca binaria. La differenza sta nella condizione che va verificata nell'elemento centrale, e che permette di decidere se proseguire la ricerca a destra o a sinistra.
+Infatti, sfruttando il fatto che gli interi memorizzati sono tutti distinti, se sia l'elemento che precede quello centrale che l'elemento che segue quello centrale sono entrambi minori di quest'ultimo, vuol dire che si Ã¨ trovato il massimo, e si puÃ² restituire il suo valore.
+Se, invece, l'elemento che precede quello centrale Ã¨ minore di quest'ultimo, che a sua volta Ã¨ minore dell'elemento che lo segue, allora bisogna proseguire la ricerca verso destra.
+Se, infine,  l'elemento che precede quello centrale Ã¨ maggiore di quest'ultimo, che a sua volta Ã¨ maggiore dell'elemento che lo segue, allora bisogna proseguire la ricerca verso sinistra.\\
+Notare che Ã¨ indispensabile gestire a parte l'eventualitÃ  che l'array contenga meno di 3 elementi visto che, in tal caso, la procedura descritta non puÃ² essere applicata.
+\\
+Ecco di seguito una possibile implementazione in Python:}
+\begin{figure}[h!]
+\center
+\includegraphics[scale=0.8]{program2.png}
+\end{figure}
+
+
+\item[b)]  
+\textbf{Il costo computazionale si calcola in modo del tutto analogo a quello dell'algoritmo di ricerca binaria iterativo, e va dettagliato.
+}
+\end{itemize}
+\medskip \medskip
+
+
+\medskip
+
+%%%%%%%%%%%%%%%%%%
+\noindent
+{\bf Esercizio 3 (10 punti):}
+\noindent Dato il puntatore $r$ al nodo radice di un albero binario non vuoto con nodi contenenti valori interi, progettare un algoritmo {\em ricorsivo} che, in tempo $\Theta(n)$, determini se l'albero contiene un cammino radice-foglia caratterizzato dalla propriet\`a di avere nodi tutti dello stesso valore. \\
+Ad esempio, per l'albero in figura a sinistra  l'algoritmo deve rispondere  $True$ (per via del cammino evidenziato in bianco) mentre per l'albero in figura a destra  la risposta deve essere  $False$.\\
+
+\medskip
+\begin{figure}[h!]
+\center
+\includegraphics[scale=0.5]{grafo.png}
+\end{figure}
+\noindent L'albero \`e memorizzato tramite puntatori a record di tre campi: il campo $key$
+contenente  il valore  intero ed i campi $left$ e $right$ con i puntatori al figlio 
+sinistro e al  figlio destro, rispettivamente (questi puntatori valgono $None$ in mancanza del figlio).
+
+\noindent 
+Dell'algoritmo proposto:
+\begin{itemize}
+\item[a)] si scriva lo pseudocodice opportunamente commentato;
+\item[b)] si giustifichi il costo computazionale.
+\end{itemize}
+
+\noindent 
+{\bf NOTA BENE}: nello pseudocodice dell'algoritmo  ricorsivo {\bf non} si deve far uso di variabili globali.
+
+\bigskip
+
+\begin{itemize}
+\item[a)]  
+\textbf{Si puÃ² utilizzare una visita dell'albero. 
+Per i nodi foglia la risposta \`e ovviamente $True$, mentre i nodi interni ricevono ricorsivamente dai  figli $True$ o $False$ a seconda che questi siano o meno radici di sottoalberi con cammini radici foglia a valori uguali. 
+Il generico nodo restituisce $True$ se almeno uno dei figli risponde $True$ ed ha il suo stesso valore, $False$ altrimenti. }
+
+\textbf{ Ecco un possibile codice Python dell'algoritmo che non utilizza variabili globali:}
+
+\smallskip
+
+\begin{figure}[h!]
+\center
+\includegraphics[scale=0.8]{program3.png}
+\end{figure}
+
+\item[b)]  
+\textbf{Il costo computazionale \`e  quello della visita di un albero con $n$ nodi.  
+L'equazione di ricorrenza relativa alla visita  \`e:}
+\begin{itemize}
+\item $T(n)=T(k)+T(n-1-k)+ \Theta(1)$
+\item $T(1)= \Theta(1)$
+\end{itemize}
+\textbf{dove $k$,  \`e il numero di nodi presenti nel sottoalbero sinistro, $0\leq k<n$. 
+L'equazione  si pu\`o risolvere con il metodo di sostituzione (che va esplicitamente svolto) dando come soluzione $\Theta(n)$. \\
+Ogni passaggio va dettagliato.}
+\end{itemize}
+\end{document}
